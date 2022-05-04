@@ -1,7 +1,6 @@
 import VerticalLayout from './VerticalLayout.js'
 import ErrorPage from "./ErrorPage.js"
 import LoadingPage from "./LoadingPage.js"
-
 import Actions from './Actions.js'
 
 const row = (bill) => {
@@ -20,7 +19,20 @@ const row = (bill) => {
   }
 
 const rows = (data) => {
-  return (data && data.length) ? data.map(bill => row(bill)).join("") : ""
+  //return (data && data.length) ? data.map(bill => row(bill)).join("") : ""
+
+  // Utilisation de la méthode sort pour trier les factures par ordre décroissant 
+  if (data && data.length) {
+    const dataSort = data.sort(function (a, b) {
+      return a.date < b.date ? 1 : -1
+    })
+    return dataSort.map(bill => {
+      return row(bill)
+    }).join("")
+  }
+  else {
+    return ''
+  }
 }
 
 export default ({ data: bills, loading, error }) => {
