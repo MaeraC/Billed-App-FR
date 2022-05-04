@@ -85,8 +85,11 @@ export default class {
     if (typeof $('#modaleFileAdmin1').modal === 'function') $('#modaleFileAdmin1').modal('show')
   }
 
-  handleEditTicket(e, bill, bills) {
+  // Gestion de l'édition de ticket
+  handleEditTicket(bill, bills) {
+    // Initialisation du compteur à 0
     if (this.counter === undefined || this.id !== bill.id) this.counter = 0
+    // Initialisation de bill.id à l'id du bill cliqué
     if (this.id === undefined || this.id !== bill.id) this.id = bill.id
     if (this.counter % 2 === 0) {
       bills.forEach(b => {
@@ -96,7 +99,8 @@ export default class {
       $('.dashboard-right-container div').html(DashboardFormUI(bill))
       $('.vertical-navbar').css({ height: '150vh' })
       this.counter ++
-    } else {
+    } 
+    else {
       $(`#open-bill${bill.id}`).css({ background: '#0D5AE5' })
 
       $('.dashboard-right-container div').html(`
@@ -131,26 +135,34 @@ export default class {
   }
 
   handleShowTickets(e, bills, index) {
-    if (this.counter === undefined || this.index !== index) this.counter = 0
-    if (this.index === undefined || this.index !== index) this.index = index
-    if (this.counter % 2 === 0) {
+    // Pas besoin de réinitialiser le ticket 
+    //if (this.counter === undefined || this.index !== index) this.counter = 0
+    //if (this.index === undefined || this.index !== index) this.index = index
+    //if (this.counter % 2 === 0) {
+    this.index = index
+    if (!$(`#arrow-icon${this.index}`).hasClass('expanded')) {
+      $(`#arrow-icon${this.index}`).addClass('expanded')
       $(`#arrow-icon${this.index}`).css({ transform: 'rotate(0deg)'})
       $(`#status-bills-container${this.index}`)
         .html(cards(filteredBills(bills, getStatus(this.index))))
-      this.counter ++
-    } else {
+    // Plus besoin du compteur 
+    //this.counter ++
+    } 
+    else {
+      $(`#arrow-icon${this.index}`).removeClass('expanded')
       $(`#arrow-icon${this.index}`).css({ transform: 'rotate(90deg)'})
       $(`#status-bills-container${this.index}`)
         .html("")
-      this.counter ++
+      //this.counter ++
     }
 
     bills.forEach(bill => {
-      $(`#open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill, bills))
+      if (!$(`#open-bill${bill.id}`).attr('hasEventListener')) {
+        $(`#open-bill${bill.id}`).click(() => this.handleEditTicket(bill, bills))
+        $(`#open-bill${bill.id}`).attr( "hasEventListener", true )
+      }
     })
-
     return bills
-
   }
 
   getBillsAllUsers = () => {
