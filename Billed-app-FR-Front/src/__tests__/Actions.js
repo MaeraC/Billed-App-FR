@@ -18,7 +18,7 @@ describe('Given I am connected as an Employee', () => {
   })
   describe('When I am on Bills page and there are bills with url for file', () => {
     test(('Then, it should save given url in data-bill-url custom attribute'), () => {
-      // Ajoute l'url de l'icon en attribut html
+      // Ajoute l'url de la facture en attribut html
       const url = '/fake_url'
       const html = Actions(url)
       document.body.innerHTML = html

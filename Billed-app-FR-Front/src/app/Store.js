@@ -1,4 +1,4 @@
-
+// Renvoie une erreur si le status de la réponse n'es pas ok 
 const jsonOrThrowIfError = async (response) => {
   if(!response.ok) throw new Error((await response.json()).message)
   return response.json()
@@ -53,7 +53,8 @@ class ApiEntity {
 }
 
 
-
+// Selon la méthode appelée, renvoie vers une méthode de l'apiEntity
+// ou crée une nouvelle instance de cette api
 class Store {
   constructor() {
     this.api = new Api({baseUrl: 'http://localhost:5678'})

@@ -136,25 +136,19 @@ export default class {
   }
 
   handleShowTickets(e, bills, index) {
-    // Pas besoin de réinitialiser le ticket 
-    //if (this.counter === undefined || this.index !== index) this.counter = 0
-    //if (this.index === undefined || this.index !== index) this.index = index
-    //if (this.counter % 2 === 0) {
     this.index = index
     if (!$(`#arrow-icon${this.index}`).hasClass('expanded')) {
       $(`#arrow-icon${this.index}`).addClass('expanded')
       $(`#arrow-icon${this.index}`).css({ transform: 'rotate(0deg)'})
       $(`#status-bills-container${this.index}`)
         .html(cards(filteredBills(bills, getStatus(this.index))))
-    // Plus besoin du compteur 
-    //this.counter ++
+        // Ouvre et affiche les factures correspondantes
     } 
     else {
       $(`#arrow-icon${this.index}`).removeClass('expanded')
       $(`#arrow-icon${this.index}`).css({ transform: 'rotate(90deg)'})
       $(`#status-bills-container${this.index}`)
         .html("")
-      //this.counter ++
     }
 
     bills.forEach(bill => {

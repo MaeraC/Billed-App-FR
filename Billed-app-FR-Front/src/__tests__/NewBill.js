@@ -15,7 +15,7 @@ import mockStore from "../__mocks__/store.js";
 // AJOUT DES TESTS
 describe("Given I am connected as an employee", () => {
   describe("When I am on NewBill Page", () => {
-    // L'icône doit être en surbrillance
+    // Vérifie que l'icône est en surbrillance 
     test("Then mail icon should be highlighted", async () => {
       Object.defineProperty(window, 'localStorage', { value: localStorageMock })
       window.localStorage.setItem('user', JSON.stringify({
@@ -33,7 +33,7 @@ describe("Given I am connected as an employee", () => {
       expect(iconMail.classList.contains('active-icon')).toBe(true) 
     })
 
-    // Le formulaire doit s'affiché
+    // Vérifie que le formulaire est bien affiché 
     test("Then the new bill's form should be displayed", () => {
       const html = NewBillUI()
       document.body.innerHTML = html
@@ -50,7 +50,7 @@ describe("Given I am connected as an employee", () => {
       expect(screen.getByRole("button")).toBeTruthy();
     })
 
-    // Je télécharge un fichier au format image
+    // Vérifie que le téléchargement d'une image est bien possible 
     test('Then I can upload an image file', () => {
       const html = NewBillUI();
 
@@ -106,6 +106,7 @@ describe("Given I am connected as an employee", () => {
     })
 
     // Une alerte apparait si je télécharge un fichier autre qu'une image 
+    // Vérifie que le téléchargement d'un document autre qu'au format image est impossible
     test("Then I can't upload a non image file", () => {
       // Mock Alert
       const html = NewBillUI();
@@ -146,8 +147,9 @@ describe("Given I am connected as an employee", () => {
     })
   })
 
-  // La facture est créée
+  
   describe("When I submit the form completed", () => {
+    // Vérifie que la facture est bien créée
     test("Then the bill is created", async () => {
 
       const html = NewBillUI()
@@ -215,13 +217,19 @@ describe("Given I am connected as an employee", () => {
       jest.spyOn(console, 'error').mockImplementation(() => {
       })// Renvoie le code erreur de jest dans la console
 
+      // Récupère localStorageMock depuis le fichier localStorage.js
       Object.defineProperty(window, 'localStorage', { value: localStorageMock })
       Object.defineProperty(window, 'location', { value: { hash: ROUTES_PATH['NewBill'] } })
 
-      window.localStorage.setItem('user', JSON.stringify({ type: 'Employee' }))
+      // Défini le user en tant qu'employé dans le localStorage
+      window.localStorage.setItem(
+        'user', JSON.stringify({ type: 'Employee' })
+      )
+
       document.body.innerHTML = `<div id="root"></div>`
       router()
 
+      // Récupère le pathname de l'url comme étant #employee/bill/new
       const onNavigate = (pathname) => {
         document.body.innerHTML = ROUTES({ pathname })
       }
@@ -236,6 +244,8 @@ describe("Given I am connected as an employee", () => {
           }
         }
       })
+
+      // New bill créée à partir de ses paramètres 
       const newBill = new NewBill({ 
         document, 
         onNavigate,
@@ -243,10 +253,14 @@ describe("Given I am connected as an employee", () => {
         localStorage: window.localStorage
       })
 
-      // Envoie du Formulaire
+      // ENVOIE DU FORMULAIRE
+      // Récupère form-new-bill
       const form = screen.getByTestId('form-new-bill')
+      // Crée une nouvelle simulation pour gérer l'event du formulaire
       const handleSubmit = jest.fn((e) => newBill.handleSubmit(e))
+      // Lance l'event handleSubmit si le formulaire est soumis 
       form.addEventListener('submit', handleSubmit)
+      // Crée un event au click et le dispatche dans le DOM
       fireEvent.submit(form)
       await new Promise(process.nextTick)
       expect(console.error).toBeCalled()

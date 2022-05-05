@@ -25,10 +25,13 @@ export default class NewBill {
 
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
     const fileName = file.name
+    // Crée un nouvel objet formulaire vide
     const formData = new FormData()
+    // Récupère l'email
     const email = JSON.parse(localStorage.getItem("user")).email
-
+    // Ajoute une clef valeur à formData
     formData.append('file', file)
+    // Ajoute une clef valeur à formData
     formData.append('email', email)
 
     // Ajout d'une condition pour vérifier que les fichiers ne soient qu'au format png, jpg ou jpeg
