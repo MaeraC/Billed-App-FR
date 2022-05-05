@@ -32,10 +32,12 @@ describe('Given I am connected', () => {
       const onNavigate = (pathname) => {
         document.body.innerHTML = ROUTES({ pathname })
       }
+
       Object.defineProperty(window, 'localStorage', { value: localStorageMock })
       window.localStorage.setItem('user', JSON.stringify({
         type: 'Admin'
       }))
+
       document.body.innerHTML = DashboardUI({ bills })
       const logout = new Logout({ document, onNavigate, localStorage })
       const handleClick = jest.fn(logout.handleClick)
@@ -43,6 +45,7 @@ describe('Given I am connected', () => {
       const disco = screen.getByTestId('layout-disconnect')
       disco.addEventListener('click', handleClick)
       userEvent.click(disco)
+      
       expect(handleClick).toHaveBeenCalled()
       expect(screen.getByText('Administration')).toBeTruthy()
     })
