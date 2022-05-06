@@ -137,7 +137,7 @@ describe("Given I am connected as an employee", () => {
 
   // TEST D'INTEGRATION GET
   describe('When I am on Bills Page', () => {
-    // Vérifie que l'api 
+    // Vérifie que les données bills sont récupérées 
     test("fetches bills from mock API GET", async () => {
       // Défini le user en tant qu'employé
       localStorage.setItem("user", JSON.stringify({ 
@@ -156,9 +156,11 @@ describe("Given I am connected as an employee", () => {
       expect(await waitFor(() => screen.getByText('Mes notes de frais'))).toBeTruthy()
     })
   })
-    
+  
+  // Quand une erreur survient sur l'api 
   describe("When an error occurs on API", () => {
-    beforeEach(() => {
+    beforeEach(() => { 
+      // Foncion simulée qui surveille bills via le mockstore
       jest.spyOn(mockStore, "bills")
       Object.defineProperty(
           window,
@@ -180,6 +182,7 @@ describe("Given I am connected as an employee", () => {
     })
     
     // TEST 404 ERROR
+    // Vérifie une erreur 404 
     test("fetches bills from an API and fails with 404 message error", async () => {
       // Simule le rejet de la promesse
       mockStore.bills.mockImplementationOnce(() => {
@@ -189,14 +192,17 @@ describe("Given I am connected as an employee", () => {
           }
       }})
 
+      // pathname de l'url
       window.onNavigate(ROUTES_PATH.Bills)
       await new Promise(process.nextTick);
       const message = await waitFor(() => screen.getByText(/Erreur 404/))
 
+      // Si une erreur est présente, un message doit apparaitre
       expect(message).toBeTruthy()
     })
     
     // TEST 500 ERROR
+    // Vérifie une erreur 500 
     test("fetches messages from an API and fails with 500 message error", async () => {
       // Simule le rejet de la promesse
       mockStore.bills.mockImplementationOnce(() => {
@@ -210,7 +216,11 @@ describe("Given I am connected as an employee", () => {
       await new Promise(process.nextTick);
       const message = await waitFor(() => screen.getByText(/Erreur 500/))
 
+      // Si une erreur est présente un message doit apparaitre 
       expect(message).toBeTruthy()
     })
   })
 })
+
+// 404 error : Erreur cote client 
+// 500 error : Erreur cote serveur 

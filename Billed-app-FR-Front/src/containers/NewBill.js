@@ -21,6 +21,7 @@ export default class NewBill {
     new Logout({ document, localStorage, onNavigate })
   }
 
+  // Gestion des documents/justificatifs
   handleChangeFile = e => {
     e.preventDefault()
     // Récupère le doc 
