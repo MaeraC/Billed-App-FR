@@ -7,9 +7,10 @@ export default class NewBill {
     this.onNavigate = onNavigate
     this.store = store
 
+    // Event envoie du formulaire "Nouvelle note de frais"
     const formNewBill = this.document.querySelector(`form[data-testid="form-new-bill"]`)
     formNewBill.addEventListener("submit", this.handleSubmit)
-
+    // Event document format image 
     const file = this.document.querySelector(`input[data-testid="file"]`)
     file.addEventListener("change", this.handleChangeFile)
 
@@ -22,7 +23,7 @@ export default class NewBill {
 
   handleChangeFile = e => {
     e.preventDefault()
-
+    // Récupère le doc 
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
     const fileName = file.name
     // Crée un nouvel objet formulaire vide
@@ -57,9 +58,9 @@ export default class NewBill {
       }
   }
 
+  // Gestion de l'envoie du formualaire 
   handleSubmit = e => {
     e.preventDefault()
-
     const email = JSON.parse(localStorage.getItem("user")).email
     const bill = {
       email,

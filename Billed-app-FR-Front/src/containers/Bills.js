@@ -1,5 +1,5 @@
 import { ROUTES_PATH } from '../constants/routes.js'
-import { formatDate, formatStatus } from "../app/format.js"
+import { formatStatus } from "../app/format.js"
 import Logout from "./Logout.js"
 
 export default class {
@@ -8,21 +8,25 @@ export default class {
     this.onNavigate = onNavigate
     this.store = store
 
+    // Event bouton "Nouvelle note de frais"
     const buttonNewBill = document.querySelector(`button[data-testid="btn-new-bill"]`)
     if (buttonNewBill) buttonNewBill.addEventListener('click', this.handleClickNewBill)
 
+    // Event icon eye
     const iconEye = document.querySelectorAll(`div[data-testid="icon-eye"]`)
     if (iconEye) iconEye.forEach(icon => {
       icon.addEventListener('click', () => this.handleClickIconEye(icon))
     })
-
     new Logout({ document, localStorage, onNavigate })
   }
 
+  // Gestion du bouton "Nouvelle note de frais"
   handleClickNewBill = () => {
+    // Pathname de l'url
     this.onNavigate(ROUTES_PATH['NewBill'])
   }
 
+  // Gestion de l'affichage du média à partir de l'icône
   handleClickIconEye = (icon) => {
     const billUrl = icon.getAttribute("data-bill-url")
     const imgWidth = Math.floor($('#modaleFile').width() * 0.5)
@@ -30,6 +34,7 @@ export default class {
     $('#modaleFile').modal('show')
   }
 
+  // Gestion des factures 
   getBills = () => {
     if (this.store) {
       return this.store

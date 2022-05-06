@@ -27,6 +27,7 @@ export const filteredBills = (data, status) => {
     }) : []
 }
 
+// Création de card pour l'affichage des bills 
 export const card = (bill) => {
   const firstAndLastNames = bill.email.split('@')[0]
   const firstName = firstAndLastNames.includes('.') ?
@@ -135,22 +136,29 @@ export default class {
     this.onNavigate(ROUTES_PATH['Dashboard'])
   }
 
+  // Gestion de l'affichage des tickets 
   handleShowTickets(e, bills, index) {
     this.index = index
+    // Si l'icon n'a pas la class expanded
     if (!$(`#arrow-icon${this.index}`).hasClass('expanded')) {
+      // Ajoute la classe 
       $(`#arrow-icon${this.index}`).addClass('expanded')
+      // Ouvre et affiche les factures correspondantes
       $(`#arrow-icon${this.index}`).css({ transform: 'rotate(0deg)'})
       $(`#status-bills-container${this.index}`)
         .html(cards(filteredBills(bills, getStatus(this.index))))
-        // Ouvre et affiche les factures correspondantes
+        
     } 
     else {
+      // Sinon enlève la classe 
       $(`#arrow-icon${this.index}`).removeClass('expanded')
+      // Ferme les factures 
       $(`#arrow-icon${this.index}`).css({ transform: 'rotate(90deg)'})
       $(`#status-bills-container${this.index}`)
         .html("")
     }
 
+    // Gère l'event d'affichage des factures 
     bills.forEach(bill => {
       if (!$(`#open-bill${bill.id}`).attr('hasEventListener')) {
         $(`#open-bill${bill.id}`).click(() => this.handleEditTicket(bill, bills))
