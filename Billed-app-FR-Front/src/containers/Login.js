@@ -17,14 +17,18 @@ export default class Login {
     const formAdmin = this.document.querySelector(`form[data-testid="form-admin"]`)
     formAdmin.addEventListener("submit", this.handleSubmitAdmin)
   }
+
+  // Gestion de l'envoie du formulaire partie Employé
   handleSubmitEmployee = e => {
     e.preventDefault()
+
     const user = {
       type: "Employee",
       email: e.target.querySelector(`input[data-testid="employee-email-input"]`).value,
       password: e.target.querySelector(`input[data-testid="employee-password-input"]`).value,
       status: "connected"
     }
+
     this.localStorage.setItem("user", JSON.stringify(user))
     this.login(user)
       .catch(
@@ -36,11 +40,12 @@ export default class Login {
         PREVIOUS_LOCATION = this.PREVIOUS_LOCATION
         this.document.body.style.backgroundColor="#fff"
       })
-
   }
 
+  // Gestion de l'envoie du formulaire de connexion de la partie administration
   handleSubmitAdmin = e => {
     e.preventDefault()
+
     const user = {
       type: "Admin",
       // employee remplacé par admin
@@ -48,6 +53,7 @@ export default class Login {
       password: e.target.querySelector(`input[data-testid="admin-password-input"]`).value,
       status: "connected"
     }
+
     this.localStorage.setItem("user", JSON.stringify(user))
     this.login(user)
       .catch(
@@ -76,7 +82,7 @@ export default class Login {
     }
   }
 
-  // not need to cover this function by tests
+  // not need to cover this function by tests 
   createUser = (user) => {
     if (this.store) {
       return this.store
@@ -94,5 +100,5 @@ export default class Login {
     } else {
       return null
     }
-  }
+  } 
 }

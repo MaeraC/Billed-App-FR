@@ -137,6 +137,7 @@ describe("Given I am connected as an employee", () => {
 
   // TEST D'INTEGRATION GET
   describe('When I am on Bills Page', () => {
+    // Vérifie que l'api 
     test("fetches bills from mock API GET", async () => {
       // Défini le user en tant qu'employé
       localStorage.setItem("user", JSON.stringify({ 
@@ -144,7 +145,7 @@ describe("Given I am connected as an employee", () => {
         email: "a@a" 
       }))
 
-      // cRéer un noeud pour intégrer le router
+      // Crée un noeud pour intégrer le router
       const root = document.createElement("div")
       root.setAttribute("id", "root")
       document.body.append(root)
@@ -164,12 +165,13 @@ describe("Given I am connected as an employee", () => {
           'localStorage',
           { value: localStorageMock }
       )
-
+      // Défini le user en tant qy'employé
       window.localStorage.setItem('user', JSON.stringify({
         type: 'Employee',
         email: "a@a"
       }))
 
+      // Crée un noeud pour intégrer le router
       const root = document.createElement("div")
       root.setAttribute("id", "root")
       document.body.appendChild(root)

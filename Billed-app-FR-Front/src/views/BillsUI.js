@@ -19,8 +19,6 @@ const row = (bill) => {
   }
 
 const rows = (data) => {
-  //return (data && data.length) ? data.map(bill => row(bill)).join("") : ""
-
   // Utilisation de la méthode sort pour trier les factures par ordre décroissant 
   if (data && data.length) {
     const dataSort = data.sort(function (a, b) {

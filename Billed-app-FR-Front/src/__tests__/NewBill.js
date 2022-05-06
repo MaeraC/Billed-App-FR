@@ -22,22 +22,26 @@ describe("Given I am connected as an employee", () => {
         type: 'Employee'
       }))
 
+      // Intègre le router dans le DOM 
       const root = document.createElement("div")
       root.setAttribute("id", "root")
       document.body.append(root)
+      // Lance le router
       router()
       window.onNavigate(ROUTES_PATH.NewBill)
       await waitFor(() => screen.getByTestId('icon-mail'))
 
+      // Récupère l'icône
       const iconMail = screen.getByTestId('icon-mail')
       expect(iconMail.classList.contains('active-icon')).toBe(true) 
     })
 
     // Vérifie que le formulaire est bien affiché 
     test("Then the new bill's form should be displayed", () => {
+      // Implémente le formulaire dans le DOM
       const html = NewBillUI()
       document.body.innerHTML = html
-
+      // Les éléments du fichiers attendus sont : 
       expect(screen.getByTestId("form-new-bill")).toBeTruthy();
       expect(screen.getByTestId("expense-type")).toBeTruthy();
       expect(screen.getByTestId("expense-name")).toBeTruthy();
@@ -54,6 +58,7 @@ describe("Given I am connected as an employee", () => {
     test('Then I can upload an image file', () => {
       const html = NewBillUI();
 
+      // Défini le user en tant qu'employé
       Object.defineProperty(window, 'localStorage', { value: localStorageMock })
       window.localStorage.setItem('user', JSON.stringify({
         type: 'Employee',
@@ -70,10 +75,12 @@ describe("Given I am connected as an employee", () => {
         }
       })
 
+      // Récupère le pathname de l'url comme étant '#employee/bills/new' 
       const onNavigate = (pathname) => {
         document.body.innerHTML = pathname;
       };
 
+      // Récupère les paramètres de NewBill
       const newBill = new NewBill({
         document,
         onNavigate,
@@ -81,7 +88,9 @@ describe("Given I am connected as an employee", () => {
         localStorage: window.localStorage,
       });
 
+      // jest.fn crée une nouvelle fonction de simulation pour le test
       const mockHandleChangeFile = jest.fn(newBill.handleChangeFile)
+      // Récupère le document
       const inputJustificative = screen.getByTestId("file");
       expect(inputJustificative).toBeTruthy();
 
@@ -111,12 +120,14 @@ describe("Given I am connected as an employee", () => {
       // Mock Alert
       const html = NewBillUI();
       document.body.innerHTML = html;
-
+      // Store défini comme null
       const store = null;
+      // Récupère le pathname de l'url
       const onNavigate = (pathname) => {
         document.body.innerHTML = pathname;
       };
 
+      // Récupère les paramètres de NewBill
       const newBill = new NewBill({
         document,
         onNavigate,
@@ -151,20 +162,20 @@ describe("Given I am connected as an employee", () => {
   describe("When I submit the form completed", () => {
     // Vérifie que la facture est bien créée
     test("Then the bill is created", async () => {
-
+      // Implémente NewBill
       const html = NewBillUI()
       document.body.innerHTML = html
-
+      // Récupère le pathname de l'url
       const onNavigate = (pathname) => {
         document.body.innerHTML = ROUTES({ pathname });
       };
-
+      // Définit user en tant qu'employé
       Object.defineProperty(window, 'localStorage', { value: localStorageMock })
       window.localStorage.setItem('user', JSON.stringify({
         type: 'Employee',
         email: "azerty@email.com",
       }))
-
+      // Récupère les paramètres Newbill
       const newBill = new NewBill({
         document,
         onNavigate,
@@ -211,9 +222,7 @@ describe("Given I am connected as an employee", () => {
 
     test('fetches error from an API and fails with 500 error', async () => {
       
-      //console.log("présente", mockStore)
       jest.spyOn(mockStore, 'bills')
-      //console.log("présente-2", mockStore)
       jest.spyOn(console, 'error').mockImplementation(() => {
       })// Renvoie le code erreur de jest dans la console
 
@@ -225,7 +234,7 @@ describe("Given I am connected as an employee", () => {
       window.localStorage.setItem(
         'user', JSON.stringify({ type: 'Employee' })
       )
-
+        // Lance le router
       document.body.innerHTML = `<div id="root"></div>`
       router()
 
@@ -233,7 +242,7 @@ describe("Given I am connected as an employee", () => {
       const onNavigate = (pathname) => {
         document.body.innerHTML = ROUTES({ pathname })
       }
-
+      // Simule le rejet de la promesse
       mockStore.bills = jest.fn().mockImplementation(() => {
         return {
           update: () => {
